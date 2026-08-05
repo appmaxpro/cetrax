@@ -33,30 +33,30 @@ install_skip_tests() {
 }
 
 run_jar() {
-    echo "*** running cantor..."
-    java -jar cantor-server/target/cantor-server.jar cantor-server/src/main/resources/cantor-server.conf
+    echo "*** running cetrax..."
+    java -jar cetrax-server/target/cetrax-server.jar cetrax-server/src/main/resources/cetrax-server.conf
 }
 
 prep_docker_internal() {
     echo "*** moving jar to docker folder"
-    cp cantor-server/target/cantor-server.jar env/dockers/cantor/
+    cp cetrax-server/target/cetrax-server.jar env/dockers/cetrax/
 }
 
 build_docker() {
     prep_docker_internal
 
-    echo "*** building cantor docker"
-    docker build --tag=cantor env/dockers/cantor
+    echo "*** building cetrax docker"
+    docker build --tag=cetrax env/dockers/cetrax
 }
 
 run_docker() {
-    echo "*** running cantor in docker container"
-    docker run -d --publish=7443:7443 --user 7447:7447 --name=cantor cantor
+    echo "*** running cetrax in docker container"
+    docker run -d --publish=7443:7443 --user 7447:7447 --name=cetrax cetrax
 }
 
 kill_docker() {
-    echo "*** killing cantor docker container"
-    docker kill cantor ; docker rm -v cantor
+    echo "*** killing cetrax docker container"
+    docker kill cetrax ; docker rm -v cetrax
 }
 
 if [ "$#" = 0 ]

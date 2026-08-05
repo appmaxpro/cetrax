@@ -22,7 +22,7 @@ site/
 # vim
 *.swp
 
-# cantor directories
+# cetrax directories
 data/
 default/
 *.db

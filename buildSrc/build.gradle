@@ -5,31 +5,9 @@ apply from: "../gradle/repos.gradle"
 apply from: "../gradle/libs.gradle"
 apply from: "../gradle/common.gradle"
 
-
-sourceSets {
-  main {
-    java {
-      srcDirs '../funext-common/src/main/java'
-      srcDirs '../funext-gradle/src/main/java'
-      srcDirs '../funext-tools/src/main/java'
-    }
-    resources {
-      srcDirs '../funext-common/src/main/resources'
-      srcDirs '../funext-tools/src/main/resources'
-    }
-  }
-}
-
 dependencies {
-  implementation libs.guava
-  implementation libs.asm
-  implementation libs.commons_csv
-  implementation libs.apache_tika_core
-  implementation libs.snakeyaml
-  implementation libs.jakarta_jaxb
-  implementation libs.jasypt
-  implementation libs.jakarta_all
-  implementation libs.caffeine
+    implementation libs.guava
+    implementation libs.jakarta_annotation
 }
 
 test.enabled = false

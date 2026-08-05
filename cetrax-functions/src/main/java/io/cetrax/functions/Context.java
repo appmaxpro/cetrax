@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2020, Salesforce.com, Inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+package io.cetrax.functions;
+
+import io.cetrax.Cetrax;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+/**
+ * This class defines the Context variable that is passed to functions by the executor.
+ * It contains a reference to Cetrax, a reference to Functions, and a map of string->object
+ * to hold contextual variables.
+ *
+ * The context object is the only way for a function to return results after execution. The result of
+ * a function call can be stored in the context as a string->object key/value which can then be picked up
+ * by the executor for further processing.
+ */
+public final class Context {
+    private final Cetrax cetrax;
+    private final Functions functions;
+    private final Map<String, Object> entities = new ConcurrentHashMap<>();
+
+    public Context(final Cetrax cetrax, final Functions functions) {
+        this.cetrax = cetrax;
+        this.functions = functions;
+    }
+
+    public Cetrax getCetrax() {
+        return this.cetrax;
+    }
+
+    public Functions getFunctions() {
+        return this.functions;
+    }
+
+    public void set(final String key, final Object value) {
+        this.entities.put(key, value);
+    }
+
+    public Object get(final String key) {
+        return this.entities.get(key);
+    }
+
+    public Set<String> keys() {
+        return this.entities.keySet();
+    }
+}

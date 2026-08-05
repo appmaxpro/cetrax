@@ -1,0 +1,12 @@
+description = 'Cetrax Metric'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.slf4j_api
+    implementation libs.dropwizard_metric
+    api project(':cetrax-base')
+    api project(':cetrax-common')
+    api project(':cetrax-h2')
+    testImplementation libs.testing
+}

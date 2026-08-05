@@ -1,8 +1,19 @@
-rootProject.name = 'funext-rpc'
+rootProject.name = 'cetrax'
 
 file("./").traverse(type: groovy.io.FileType.DIRECTORIES, maxDepth: 1) { it ->
-    if (it.isDirectory() && new File(it, 'build.gradle').exists()) {
+    if (it.isDirectory()
+            && it.name != 'buildSrc'
+            && new File(it, 'build.gradle').exists()) {
+
+        println("include ${it.name}")
         include "${it.name}"
-        project("${it.name}").projectDir = it
+        project(":${it.name}").projectDir = it
     }
 }
+
+include ":microraft:microraft"
+include ":microraft:microraft-hocon"
+include ":microraft:microraft-metrics"
+include ":microraft:microraft-store-sqlite"
+include ":microraft:microraft-tutorial"
+include ":microraft:microraft-yaml"

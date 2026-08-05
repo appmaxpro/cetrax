@@ -1,6 +1,6 @@
 version: '2'
 services:
-  cantor-server:
+  cetrax-server:
     build: .
     ports:
      - "7443:7443"

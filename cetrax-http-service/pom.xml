@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2020, Salesforce.com, Inc.
+  ~ All rights reserved.
+  ~ SPDX-License-Identifier: BSD-3-Clause
+  ~ For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cetrax-parent</artifactId>
+        <groupId>io.cetrax</groupId>
+        <version>0.5.25-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>cetrax-http-service</artifactId>
+    <name>cetrax-http-service</name>
+
+    <properties>
+        <spring.jersey.version>4.0.1</spring.jersey.version>
+        <swagger.version>2.2.41</swagger.version>
+        <swagger.classgraph.version>4.8.131</swagger.classgraph.version>
+    </properties>
+
+    <dependencies>
+        <!--CANTOR BASE-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-base</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--CANTOR BASE-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-functions</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--JERSEY-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
+            <version>${spring.jersey.version}</version>
+        </dependency>
+        <!--SWAGGER-->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-jakarta</artifactId>
+            <version>${swagger.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.github.classgraph</groupId>
+                    <artifactId>classgraph</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.classgraph</groupId>
+            <artifactId>classgraph</artifactId>
+            <version>${swagger.classgraph.version}</version>
+        </dependency>
+        <!--JSON/GSON-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <!--LOGBACK-->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+    </dependencies>
+</project>

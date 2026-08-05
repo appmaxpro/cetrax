@@ -1,0 +1,8 @@
+description = 'Cetrax Base'
+
+apply plugin: 'java'
+
+dependencies {
+  compileOnly libs.slf4j_api
+
+}

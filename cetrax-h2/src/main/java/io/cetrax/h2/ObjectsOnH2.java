@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2020, Salesforce.com, Inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+package io.cetrax.h2;
+
+import io.cetrax.Objects;
+import io.cetrax.jdbc.AbstractBaseObjectsOnJdbc;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+
+import static io.cetrax.jdbc.JdbcUtils.quote;
+
+public class ObjectsOnH2 extends AbstractBaseObjectsOnJdbc implements Objects {
+
+    public ObjectsOnH2(final String path) throws IOException {
+        this(H2DataSourceProvider.getDatasource(new H2DataSourceProperties().setPath(path)));
+    }
+
+    public ObjectsOnH2(final DataSource dataSource) throws IOException {
+        super(dataSource);
+    }
+
+    @Override
+    protected String getCreateInternalDatabaseSql() {
+        return H2Utils.getH2CreateDatabaseSql(getCetraxInternalDatabaseName());
+    }
+
+    @Override
+    protected String getCreateDatabaseSql(final String database) {
+        return H2Utils.getH2CreateDatabaseSql(database);
+    }
+
+    @Override
+    protected String getDropDatabaseSql(final String database) {
+        return H2Utils.getH2DropDatabaseSql(database);
+    }
+
+    @Override
+    protected String getCreateObjectsTableSql(final String namespace) {
+        return "CREATE TABLE IF NOT EXISTS " + getTableFullName(namespace, getObjectsTableName()) + "( " +
+                " " + quote(getKeyColumnName()) + " VARCHAR NOT NULL, " +
+                " " + quote(getValueColumnName()) + " BLOB NOT NULL, " +
+                "  PRIMARY KEY (" + quote(getKeyColumnName()) + ") ) "
+                ;
+    }
+}
+

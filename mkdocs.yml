@@ -1,4 +1,4 @@
-site_name: Cantor 
+site_name: Cetrax 
 
 # Theme
 theme:
@@ -8,7 +8,7 @@ theme:
     primary: 'white'
     accent: 'white'
   favicon: 'favicon.ico'
-  logo: 'cantor-logo.png'
+  logo: 'cetrax-logo.png'
 
 
 # Navigations
@@ -29,8 +29,8 @@ nav:
   - "License": "license.md"
 
 # Github repository
-repo_name: 'salesforce/cantor'
-repo_url: 'https://github.com/salesforce/cantor'
+repo_name: 'salesforce/cetrax'
+repo_url: 'https://github.com/salesforce/cetrax'
 
 # Copyright
 copyright: 'Copyright &copy; 2020 Salesforce'

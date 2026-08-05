@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2020, Salesforce.com, Inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+package io.cetrax.http.jersey;
+
+import org.eclipse.jetty.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Application {
+    private static final Logger logger = LoggerFactory.getLogger(EmbeddedHttpServer.class);
+
+    private static final String basePath = "/api/*";
+    private static final int port = 8083;
+
+    public static void main(String[] args) {
+        logger.info("starting cetrax http server...");
+        final Server server = new EmbeddedHttpServer().createServer(port, basePath);
+
+        try {
+            server.start();
+            System.out.println("Server started: http://localhost:" + port);
+            server.join();
+        } catch (final Exception e) {
+            logger.error("failed to start Cetrax HTTP Server: ", e);
+            System.exit(1);
+        } finally {
+            server.destroy();
+        }
+    }
+}

@@ -1,0 +1,12 @@
+description = 'Cetrax on top of H2'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.slf4j_api
+    compileOnly libs.typesafe
+    compileOnly libs.jakarta_all
+    api project(':cetrax-common')
+    implementation project(':cetrax-jdbc')
+    implementation 'com.h2database:h2:2.4.240'
+}

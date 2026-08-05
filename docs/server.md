@@ -1,1 +1,1 @@
-# Cantor Server
+# Cetrax Server

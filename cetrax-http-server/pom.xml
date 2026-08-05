@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2020, Salesforce.com, Inc.
+  ~ All rights reserved.
+  ~ SPDX-License-Identifier: BSD-3-Clause
+  ~ For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cetrax-parent</artifactId>
+        <groupId>io.cetrax</groupId>
+        <version>0.5.25-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>cetrax-http-server</artifactId>
+    <name>cetrax-http-server</name>
+
+    <properties>
+        <jersey.version>4.0.2</jersey.version>
+        <jetty.version>12.1.9</jetty.version>
+        <groovy.version>3.0.8</groovy.version>
+        <freemarker.version>2.3.30</freemarker.version>
+    </properties>
+
+    <dependencies>
+        <!--CANTOR HTTP-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-http-service</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jersey</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--CANTOR H2-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-h2</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--CANTOR MYSQL-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-mysql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--CANTOR GRPC-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-grpc-client</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--CANTOR MISC-->
+        <dependency>
+            <groupId>io.cetrax</groupId>
+            <artifactId>cetrax-misc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--FREEMARKER-->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
+        </dependency>
+        <!--GROOVY-->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-jsr223</artifactId>
+            <version>${groovy.version}</version>
+        </dependency>
+        <!--JERSEY JETTY-->
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-jetty-servlet</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.ee10</groupId>
+            <artifactId>jetty-ee10-servlet</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <!--JERSEY HK2-->
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!--JERSEY MULTIPART-->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+        <!--JERSEY JSON-->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>${jersey.version}</version>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,12 @@
+description = 'Cetrax Raft Common Cli'
+
+apply plugin: 'java'
+
+dependencies {
+    implementation libs.slf4j_logback
+    implementation libs.typesafe
+    implementation libs.jakarta_all
+    implementation libs.microraft(project)
+    implementation "info.picocli:picocli:4.6.3"
+
+}

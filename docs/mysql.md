@@ -1,2 +1,2 @@
-# Cantor On MySQL
+# Cetrax On MySQL
 

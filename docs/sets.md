@@ -17,7 +17,7 @@ A set looks like this:
 
 To make HTTP calls in local testing environment, use this base URL: [http://localhost:8084](http://localhost:8084).
 
-For convenience, you can use [Cantor Swagger UI](http://localhost:8084), which comes with your local cantor instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cantor HTTP server instance before you click on any Swagger UI link on this page.**
+For convenience, you can use [Cetrax Swagger UI](http://localhost:8084), which comes with your local cetrax instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cetrax HTTP server instance before you click on any Swagger UI link on this page.**
 
 Most of the `Sets` API endpoints need required and/or optional URL parameters. Required URL parameters are shown as part of endpoint's path, while optional URL parameters, if existed, are given below.
 

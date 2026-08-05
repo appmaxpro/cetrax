@@ -1,0 +1,19 @@
+description = 'Cetrax http server'
+
+apply plugin: 'java'
+
+dependencies {
+    implementation libs.typesafe
+    implementation libs.jakarta_all
+    implementation libs.groovy
+    implementation libs.freemarker
+    implementation libs.spring_jersey
+    implementation libs.gson
+    implementation libs.jersey
+    implementation libs.jetty12
+    implementation libs.spring_jersey
+    implementation libs.swagger
+    implementation project(':cetrax-misc')
+    implementation project(':cetrax-http-service')
+    implementation project(':cetrax-grpc-client')
+}

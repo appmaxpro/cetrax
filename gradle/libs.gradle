@@ -4,34 +4,18 @@ def versions = ext.libsVersions = [:]
 // versions
 versions.guice = "7.0.0"
 versions.guava = "33.4.8-jre"
-versions.hibernate = "7.4.5.Final"
-versions.hibernate_validator = "9.0.0.Final"
-versions.hibernate_search = "7.1.10"
 
 versions.groovy = "4.0.28"
-versions.graal_js = "25.1.3"
 versions.resteasy = "7.0.2.Final"
 versions.jackson = "3.1.4"
-versions.shiro = "2.0.5"
-versions.buji_pac4j = "9.1.0"
-versions.jakartaee_pac4j = "8.0.3"
-versions.pac4j = "6.5.4"
-versions.ldaptive = "2.4.2"
-
 versions.slf4j = "2.0.17"
 
-versions.tomcat = "10.1.47"
-
-versions.tomcat_embed = "${versions.tomcat}"
-
 versions.asm = "9.9"
-
-versions.flyway = "12.10.0"
-versions.redisson = "4.6.1"
 
 versions.jakarta = "10.0.0"
 
 versions.junit = "6.0.3"
+versions.grpc = "1.83.1"
 
 // unit testing
 libs.junit = "junit:junit:${versions.junit}"
@@ -54,12 +38,20 @@ libs.slf4j_logback = libs.slf4j_base + [
         "org.jline:jansi:3.30.6"
 ]
 
-versions.geolatte = "1.8.2"
+libs.typesafe = 'com.typesafe:config:1.4.3'
+libs.freemarker = 'org.freemarker:freemarker:2.3.34'
+libs.testing = 'org.testng:testng:7.12.0'
+libs.grpc = [
+        "io.grpc:grpc-okhttp:${versions.grpc}",
+        "io.grpc:grpc-protobuf-lite:${versions.grpc}",
+        "io.grpc:grpc-stub:${versions.grpc}"
+]
+libs.grpc_gen = "io.grpc:protoc-gen-grpc-java:${versions.grpc}"
 
-
-versions.jetty = "12.1.11"
-
-
+libs.google_protoc = 'com.google.protobuf:protoc:3.25.8'
+libs.HikariCP = "com.zaxxer:HikariCP:7.0.2"
+libs.dropwizard_metric = "io.dropwizard.metrics:metrics-core:4.2.4"
+libs.gson = "com.google.code.gson:gson:2.14.0"
 // Guava
 libs.guava = "com.google.guava:guava:${versions.guava}"
 
@@ -87,31 +79,23 @@ libs.guice_persist = excludeGuava("com.google.inject.extensions:guice-persist:${
 
 // ASM
 libs.asm = [
-  "org.ow2.asm:asm:${versions.asm}",
-  "org.ow2.asm:asm-commons:${versions.asm}",
-  "org.ow2.asm:asm-util:${versions.asm}",
-  "org.ow2.asm:asm-tree:${versions.asm}",
-  "org.ow2.asm:asm-analysis:${versions.asm}"
+        "org.ow2.asm:asm:${versions.asm}",
+        "org.ow2.asm:asm-commons:${versions.asm}",
+        "org.ow2.asm:asm-util:${versions.asm}",
+        "org.ow2.asm:asm-tree:${versions.asm}",
+        "org.ow2.asm:asm-analysis:${versions.asm}"
 ]
-
-
 
 // Byte Buddy
 libs.byte_buddy = "net.bytebuddy:byte-buddy:1.17.7"
-
-// Graal JS
-libs.graal_js = [
-        "org.graalvm.polyglot:polyglot:${versions.graal_js}",
-        "org.graalvm.polyglot:js:${versions.graal_js}",
-]
 
 libs.jakarta_platform = dependencies.platform("jakarta.platform:jakarta.jakartaee-bom:${versions.jakarta}")
 
 // jakarta libs
 libs.jakarta_jaxb = [
-    "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2",
-    //"org.glassfish.jaxb:jaxb-runtime:4.0.6" ,
-    "com.sun.xml.bind:jaxb-impl:4.0.5",
+        "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2",
+        //"org.glassfish.jaxb:jaxb-runtime:4.0.6" ,
+        "com.sun.xml.bind:jaxb-impl:4.0.5",
 ]
 
 libs.jakarta_servlet = [
@@ -122,15 +106,16 @@ libs.jakarta_servlet = [
 
 libs.jakarta_all = [
         libs.jakarta_platform,
+        "jakarta.ws.rs:jakarta.ws.rs-api",
         "jakarta.inject:jakarta.inject-api",
         "jakarta.annotation:jakarta.annotation-api",
         "jakarta.transaction:jakarta.transaction-api",
         'jakarta.validation:jakarta.validation-api',
         'jakarta.persistence:jakarta.persistence-api',
-        dependencies.create("jakarta.enterprise:jakarta.enterprise.cdi-api"){
+        dependencies.create("jakarta.enterprise:jakarta.enterprise.cdi-api") {
             exclude group: "jakarta.servlet"
         },
-        dependencies.create("jakarta.enterprise.concurrent:jakarta.enterprise.concurrent-api"){
+        dependencies.create("jakarta.enterprise.concurrent:jakarta.enterprise.concurrent-api") {
             exclude group: "jakarta.servlet"
         },
 ]
@@ -162,59 +147,13 @@ libs.greenmail = "com.icegreen:greenmail-junit5:2.1.8"
 libs.jdbc_hsqldb = "org.hsqldb:hsqldb:2.7.4"
 libs.jdbc_postgres = "org.postgresql:postgresql:42.7.8"
 libs.jdbc_mysql = "com.mysql:mysql-connector-j:9.4.0"
-
-libs.hibernate_platform = "org.hibernate.orm:hibernate-platform:${versions.hibernate}"
-// Hibernate
-libs.hibernate = [
-        dependencies.platform("org.hibernate.orm:hibernate-platform:${versions.hibernate}"),
-        "org.hibernate.orm:hibernate-core",
-        "org.hibernate.orm:hibernate-hikaricp",
-        "org.hibernate.orm:hibernate-jcache",
-        "org.hibernate.orm:hibernate-spatial",
-        "com.zaxxer:HikariCP:7.0.2",
-        "org.hibernate.validator:hibernate-validator:${versions.hibernate_validator}",
-]
 // Caching libs
 libs.ehcache = "org.ehcache:ehcache:3.11.1"
 
-libs.redisson = [
-
-    "org.redisson:redisson:${versions.redisson}",
-    dependencies.create("org.redisson:redisson-hibernate-72:${versions.redisson}") {
-        exclude group: 'tools.jackson.core', module: 'jackson-core'
-        exclude group: 'tools.jackson.core', module: 'jackson-databind'
-        exclude group: 'com.fasterxml.jackson.core', module: 'jackson-annotations'
-        exclude group: "tools.jackson.dataformat", module: "jackson-dataformat-yaml"
-    }
-]
-
-libs.hazelcast = "com.hazelcast:hazelcast:5.1.3"
 libs.caffeine = "com.github.ben-manes.caffeine:jcache:3.2.3"
-libs.infinispan = [
-    "org.infinispan:infinispan-hibernate-cache-v53:13.0.11.Final",
-    "org.infinispan:infinispan-core:13.0.11.Final",
-    "org.infinispan:infinispan-jcache:13.0.11.Final"
-]
 
 /// apache tika
 libs.apache_tika_core = "org.apache.tika:tika-core:3.2.3"
-// flyway
-libs.flywaydb = [
-        dependencies.create("org.flywaydb:flyway-core:${versions.flyway}") {
-            exclude group: 'tools.jackson.dataformat', module: 'jackson-dataformat-toml'
-        },
-        "org.flywaydb:flyway-database-hsqldb:${versions.flyway}",
-        "org.flywaydb:flyway-database-oracle:${versions.flyway}",
-        "org.flywaydb:flyway-database-postgresql:${versions.flyway}",
-        "org.flywaydb:flyway-mysql:${versions.flyway}",
-        // overrides jackson version used
-        "tools.jackson.dataformat:jackson-dataformat-toml"
-]
-
-// eclipselink
-//libs.eclipselink_moxy = "org.eclipse.persistence:org.eclipse.persistence.moxy:2.7.11"
-
-
 
 // groovy
 libs.groovy = [
@@ -227,67 +166,6 @@ libs.groovy = [
         "org.apache.groovy:groovy-json:${versions.groovy}"
 ]
 
-def resteasy_module = { name ->
-    dependencies.create("org.jboss.resteasy:${name}:${versions.resteasy}") {
-        exclude module: "jackson-jakarta-rs-base"
-        exclude module: "jackson-module-jakarta-xmlbind-annotations"
-        exclude module: "jackson-jakarta-rs-json-provider"
-        exclude module: "mail", group: "javax.mail"
-        exclude module: "angus-mail"
-        exclude group: "com.fasterxml.jackson.core"
-        exclude group: "com.fasterxml.jackson.datatype"
-        exclude group: "tools.jackson.core"
-        exclude module: "angus-activation"
-        exclude group: "jakarta.mail", module: "jakarta.mail-api"
-        exclude module: "jandex", group: "org.jboss"
-        exclude group: "jakarta.servlet"
-        exclude group: "jakarta.inject"
-        exclude group: "jakarta.annotation"
-    }
-}
-
-// jax-rs
-libs.resteasy = [
-        resteasy_module("resteasy-core"),
-        resteasy_module("resteasy-client"),
-        resteasy_module("resteasy-servlet-initializer"),
-        dependencies.create("org.jboss.resteasy:resteasy-jaxb-provider:${versions.resteasy}") {
-            exclude module: "jandex", group: "org.jboss"
-            exclude module: "angus-activation"
-            exclude module: "jakarta.xml.bind"
-            exclude group: "com.fasterxml.jackson.core"
-            exclude group: "com.fasterxml.jackson.datatype"
-        },
-        dependencies.create("org.jboss.resteasy:resteasy-jackson2-provider:${versions.resteasy}") {
-            exclude module: "jandex", group: "org.jboss"
-            exclude module: "angus-activation"
-            exclude group: "com.fasterxml.jackson.core"
-            exclude group: "com.fasterxml.jackson.datatype"
-            exclude group: "com.fasterxml.jackson.jakarta.rs"
-            exclude group: "com.fasterxml.jackson.module"
-        },
-
-]
-
-libs.resteasy_multipart = resteasy_module("resteasy-multipart-provider")
-libs.resteasy_guice = dependencies.create("dev.resteasy.guice:resteasy-guice:1.0.0.Alpha1") {
-    exclude module: "resteasy-jaxb-provider"
-    exclude module: "jackson-jakarta-rs-base"
-    exclude module: "jackson-module-jakarta-xmlbind-annotations"
-    exclude module: "jackson-jakarta-rs-json-provider"
-    exclude module: "mail", group: "javax.mail"
-    exclude module: "angus-activation"
-    exclude module: "jandex", group: "org.jboss"
-    exclude group: 'com.google.inject', module: 'guice'
-}
-libs.resteasy_client = resteasy_module("resteasy-client")
-libs.resteasy_server = [
-        dependencies.create("org.jboss.resteasy:resteasy-undertow:${versions.resteasy}") {
-            exclude module: "jandex", group: "org.jboss"
-        },
-        "io.undertow:undertow-core:2.3.19.Final",
-        "io.undertow:undertow-servlet:2.3.19.Final"
-]
 
 def excludeJackson = { name ->
     [
@@ -302,7 +180,7 @@ def excludeJackson = { name ->
 }
 
 // jackson
-libs.jackson_libs = [
+libs.jackson = [
 
         dependencies.platform("tools.jackson:jackson-bom:${versions.jackson}"),
         "tools.jackson.core:jackson-databind",
@@ -313,198 +191,13 @@ libs.jackson_libs = [
         //"com.fasterxml.jackson.module:jackson-module-parameter-names"
 ]
 
-// Apache Shiro
-libs.apache_shiro = [
-        "org.apache.shiro:shiro-core:${versions.shiro}:jakarta",
-        dependencies.create("org.apache.shiro:shiro-web:${versions.shiro}:jakarta") {
-            // we use jakarta classifier
-            exclude group: 'org.apache.shiro', module: 'shiro-core'
-        },
-        dependencies.create("org.apache.shiro:shiro-guice:${versions.shiro}:jakarta") {
-            exclude group: 'javax.annotation', module: 'javax.annotation-api'
-            exclude group: 'com.google.inject', module: 'guice'
-            // we use jakarta classifier
-            exclude group: 'org.apache.shiro', module: 'shiro-core'
-        },
-        "org.apache.shiro:shiro-jcache:${versions.shiro}"
-]
-
-libs.buji_pac4j = [
-
-        dependencies.create("io.buji:buji-pac4j:${versions.buji_pac4j}") {
-            exclude group: 'org.apache.shiro', module: 'shiro-web'
-            exclude group: 'org.pac4j', module: 'pac4j-javaee'
-            //exclude group: 'org.projectlombok', module: 'lombok'
-            exclude group: 'tools.jackson.core'
-            exclude group: 'com.fasterxml.jackson.core'
-            exclude group: 'tools.jackson.datatype'
-            exclude group: 'tools.jackson.dataformat'
-            exclude group: 'com.fasterxml.jackson.datatype'
-        },
-
-        //"org.pac4j:jakartaee-pac4j:${versions.jakartaee_pac4j}",
-
-        dependencies.create("org.pac4j:jakartaee-pac4j:${versions.jakartaee_pac4j}") {
-            exclude group: 'org.mockito', module: 'mockito-core'
-            exclude group: 'tools.jackson.core'
-            exclude group: 'com.fasterxml.jackson.core'
-            exclude group: 'tools.jackson.datatype'
-            exclude group: 'tools.jackson.dataformat'
-            exclude group: 'com.fasterxml.jackson.datatype'
-        }
-]
-
-libs.pac4j = [
-        excludeJackson("org.pac4j:pac4j-core:${versions.pac4j}"),
-        excludeJackson("org.pac4j:pac4j-http:${versions.pac4j}"),
-        excludeJackson("org.pac4j:pac4j-ldap:${versions.pac4j}"),
-        "org.ldaptive:ldaptive:${versions.ldaptive}"
-] + libs.buji_pac4j
-
-
-// UnboundID LDAP SDK (for testing only)
-libs.unboundid_ldapsdk = 'com.unboundid:unboundid-ldapsdk:6.0.6'
-
 // commons
 libs.commons_cli = "commons-cli:commons-cli:1.5.0"
 libs.commons_jxpath = "commons-jxpath:commons-jxpath:1.4.0"
-libs.commons_csv = [
-    "org.apache.commons:commons-csv:1.14.1",
-    "commons-io:commons-io:2.20.0"
-]
-
-// BIRT Runtime
-def birt_module = { name ->
-    dependencies.create("org.eclipse.birt:${name}:4.21.0") {
-        exclude module: "jetty-servlet-api"
-        exclude module: "xml-apis"
-    }
-}
-libs.birt_runtime = [
-        birt_module("org.eclipse.birt.chart.device.extension"),
-        birt_module("org.eclipse.birt.chart.device.pdf"),
-        birt_module("org.eclipse.birt.chart.device.svg"),
-        birt_module("org.eclipse.birt.chart.engine.extension"),
-        birt_module("org.eclipse.birt.chart.engine"),
-        birt_module("org.eclipse.birt.chart.reportitem"),
-        birt_module("org.eclipse.birt.core.script.function"),
-        birt_module("org.eclipse.birt.data.oda.pojo"),
-        birt_module("org.eclipse.birt.report.data.oda.excel"),
-        birt_module("org.eclipse.birt.report.data.oda.hive"),
-        birt_module("org.eclipse.birt.report.data.oda.jdbc.dbprofile"),
-        birt_module("org.eclipse.birt.report.data.oda.jdbc"),
-        birt_module("org.eclipse.birt.report.data.oda.xml"),
-        birt_module("org.eclipse.birt.report.engine.dataextraction.csv"),
-        birt_module("org.eclipse.birt.report.engine.dataextraction"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.docx"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.excel"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.html"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.odp"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.ods"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.odt"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.pdf"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.postscript"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.ppt"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.pptx"),
-        birt_module("org.eclipse.birt.report.engine.emitter.config.wpml"),
-        birt_module("org.eclipse.birt.report.engine.emitter.docx"),
-        birt_module("org.eclipse.birt.report.engine.emitter.html"),
-        birt_module("org.eclipse.birt.report.engine.emitter.odp"),
-        birt_module("org.eclipse.birt.report.engine.emitter.ods"),
-        birt_module("org.eclipse.birt.report.engine.emitter.odt"),
-        birt_module("org.eclipse.birt.report.engine.emitter.pdf"),
-        birt_module("org.eclipse.birt.report.engine.emitter.postscript"),
-        birt_module("org.eclipse.birt.report.engine.emitter.ppt"),
-        birt_module("org.eclipse.birt.report.engine.emitter.pptx"),
-        birt_module("org.eclipse.birt.report.engine.emitter.prototype.excel"),
-        birt_module("org.eclipse.birt.report.engine.emitter.wpml"),
-        birt_module("org.eclipse.birt.report.engine.fonts"),
-        birt_module("org.eclipse.birt.report.engine.script.javascript"),
-        birt_module("org.eclipse.birt.report.engine"),
-        birt_module("org.eclipse.birt.report.item.crosstab.core"),
-        birt_module("org.eclipse.birt.report.model.adapter.oda"),
-        dependencies.create(birt_module("uk.co.spudsoft.birt.emitters.excel")) {
-            exclude group: "org.apache.commons", module: "commons-compress"
-        },
-        // CVE-2025-48924
-        "org.apache.commons:commons-compress:1.28.0"
-]
-
-// Quartz Scheduler
-libs.quartz = dependencies.create("org.quartz-scheduler:quartz:2.5.0") {
-    exclude module: "c3p0"
-}
-
-// xstream
-libs.xstream = [
-        "com.thoughtworks.xstream:xstream:1.4.21",
-        //"com.fasterxml.woodstox:woodstox-core:7.1.1"
-]
-
-// jsoup for html parsing & sanitize
-libs.jsoup = "org.jsoup:jsoup:1.21.2"
-
-// StringTemplate
-libs.ST4 = "org.antlr:ST4:4.3.4"
-
-// jakarta EL API and impl
-libs.tomcat_jakarta_el = "org.apache.tomcat.embed:tomcat-embed-el:${versions.tomcat}"
-// embeded tomcat
-libs.tomcat_embed = [
-        "org.apache.tomcat.embed:tomcat-embed-core:${versions.tomcat}",
-        "org.apache.tomcat.embed:tomcat-embed-jasper:${versions.tomcat}",
-        "org.apache.tomcat.embed:tomcat-embed-websocket:${versions.tomcat}",
-        libs.tomcat_jakarta_el
-]
-
-libs.jasypt = "org.jasypt:jasypt:1.9.3"
-
 // gradle tooling
 libs.gradle_tooling = "org.gradle:gradle-tooling-api:${gradle.gradleVersion}"
 // gradle plugins
 libs.plugin_license = "gradle.plugin.com.hierynomus.gradle.plugins:license-gradle-plugin:0.16.1"
-libs.plugin_node = "com.github.node-gradle:gradle-node-plugin:3.4.0"
-
-
-libs.geolatte = [
-   "org.geolatte:geolatte-geom:${versions.geolatte}",
-   "org.geolatte:geolatte-geojson:${versions.geolatte}"
-]
-
-libs.picocli = "info.picocli:picocli:4.7.7"
-
-libs.minio = [
-
-        dependencies.create("io.minio:minio:8.5.17") {
-            exclude group: "com.fasterxml.jackson.core", module: "jackson-annotations"
-            exclude group: "com.fasterxml.jackson.core", module: "jackson-core"
-            exclude group: "com.fasterxml.jackson.core", module: "jackson-databind"
-            exclude group: "org.apache.commons", module: "commons-compress"
-        },
-        // CVE-2025-48924
-        "org.apache.commons:commons-compress:1.28.0"
-]
-
-libs.totp = dependencies.create('dev.samstevens.totp:totp:1.7.1') {
-    exclude group: 'com.beust', module: 'jcommander'
-}
-
-libs.jetty12 = [
-  dependencies.platform("org.eclipse.jetty:jetty-bom:${versions.jetty}"),
-  "org.eclipse.jetty:jetty-server",
-  "org.eclipse.jetty:jetty-session",
-  "org.eclipse.jetty:jetty-util",
-  "org.eclipse.jetty:jetty-jmx",
-  dependencies.platform("org.eclipse.jetty.ee11:jetty-ee11-bom:${versions.jetty}"),
-  "org.eclipse.jetty.ee11:jetty-ee11-servlet",
-  "org.eclipse.jetty.ee11:jetty-ee11-webapp",
-  "org.eclipse.jetty.ee11:jetty-ee11-apache-jsp",
-  "org.eclipse.jetty.ee11.websocket:jetty-ee11-websocket-jakarta-server",
-  "org.eclipse.jetty.compression:jetty-compression-server",
-  "org.eclipse.jetty.compression:jetty-compression-zstandard",
-  "org.eclipse.jetty.compression:jetty-compression-gzip",
-]
-libs.jetty12.addAll(libs.jakarta_websocket)
 
 libs.commons_lang3 = 'org.apache.commons:commons-lang3:3.2'
 
@@ -512,3 +205,60 @@ libs.jwt = [
         excludeJackson('com.auth0:java-jwt:4.4.0'),
         'com.nimbusds:nimbus-jose-jwt:10.6'
 ]
+
+versions.jersey = "4.0.2"
+versions.jetty = "12.1.11"
+
+libs.swagger = [
+        dependencies.create('io.swagger.core.v3:swagger-jaxrs2-jakarta:2.2.41') {
+            exclude group: 'io.github.classgraph', module: 'classgraph'
+        }
+]
+
+libs.classgraph = [
+        'io.github.classgraph:classgraph:4.8.131'
+]
+
+libs.spring_jersey = [
+        "org.springframework.boot:spring-boot-starter-jersey:${versions.jersey}"
+]
+
+
+libs.jersey = [
+        "org.glassfish.jersey.containers:jersey-container-jetty-servlet:${versions.jersey}",
+        "org.glassfish.jersey.media:jersey-media-multipart:${versions.jersey}",
+        "org.glassfish.jersey.media:jersey-media-json-jackson:${versions.jersey}",
+]
+
+libs.jetty12 = [
+        dependencies.platform("org.eclipse.jetty:jetty-bom:${versions.jetty}"),
+        "org.eclipse.jetty:jetty-server",
+        "org.eclipse.jetty:jetty-session",
+        "org.eclipse.jetty:jetty-util",
+        "org.eclipse.jetty:jetty-jmx",
+        dependencies.platform("org.eclipse.jetty.ee11:jetty-ee11-bom:${versions.jetty}"),
+        "org.eclipse.jetty.ee11:jetty-ee11-servlet",
+        "org.eclipse.jetty.ee11:jetty-ee11-webapp",
+        "org.eclipse.jetty.ee11:jetty-ee11-apache-jsp",
+        "org.eclipse.jetty.ee11.websocket:jetty-ee11-websocket-jakarta-server",
+        "org.eclipse.jetty.compression:jetty-compression-server",
+        "org.eclipse.jetty.compression:jetty-compression-zstandard",
+        "org.eclipse.jetty.compression:jetty-compression-gzip",
+]
+versions.microraft = "0.9"
+versions.microrafts = [
+        ":microraft:microraft",
+        ":microraft:microraft-hocon",
+        ":microraft:microraft-store-sqlite"
+]
+libs.microraft =  (Project it) -> {
+    [
+
+            it.project(":microraft:microraft"),
+            it.project(":microraft:microraft-hocon"),
+            it.project(":microraft:microraft-store-sqlite")
+    ]
+}
+
+
+

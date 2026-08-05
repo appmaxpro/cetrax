@@ -1,0 +1,10 @@
+description = 'Cetrax Raft Common'
+
+apply plugin: 'java'
+
+dependencies {
+    implementation libs.slf4j_logback
+    implementation libs.typesafe
+    implementation libs.jakarta_all
+    implementation libs.microraft(project)
+}

@@ -9,22 +9,22 @@ MAINTAINER pteyer@salesforce.com
 
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN groupadd --system --gid 7447 cantor
-RUN adduser --system --gid 7447 --uid 7447 --shell /sbin/nologin cantor
+RUN groupadd --system --gid 7447 cetrax
+RUN adduser --system --gid 7447 --uid 7447 --shell /sbin/nologin cetrax
 
 RUN yum install java -y
 
-# work in cantor home directory
-WORKDIR /home/cantor/
+# work in cetrax home directory
+WORKDIR /home/cetrax/
 
-# add start script and cantor jar
-ADD start.sh /home/cantor/start.sh
-ADD cantor-server.jar /home/cantor/cantor-server.jar
-ADD cantor-server.conf /home/cantor/cantor-server.conf
-ADD cantor-logback.xml /home/cantor/cantor-logback.xml
+# add start script and cetrax jar
+ADD start.sh /home/cetrax/start.sh
+ADD cetrax-server.jar /home/cetrax/cetrax-server.jar
+ADD cetrax-server.conf /home/cetrax/cetrax-server.conf
+ADD cetrax-logback.xml /home/cetrax/cetrax-logback.xml
 
-# make cantor the owner
-RUN chown -R cantor /home/cantor/
+# make cetrax the owner
+RUN chown -R cetrax /home/cetrax/
 
-CMD bash ./start.sh /home/cantor/cantor-server.conf
+CMD bash ./start.sh /home/cetrax/cetrax-server.conf
 

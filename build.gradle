@@ -5,17 +5,15 @@ buildscript {
     }
 }
 
-apply plugin: "eclipse"
+plugins {
+    id 'java-library'
+    id 'maven-publish' // 1. Apply the plugin
+    id 'com.google.protobuf' version '0.9.5'
+}
+
 apply plugin: "idea"
 
 apply from: "version.gradle"
-
-
-gradle.taskGraph.whenReady { taskGraph ->
-    if (taskGraph.hasTask(":ext:build") || taskGraph.hasTask("ext:build")) {
-        tasks.each { it.enabled = false }
-    }
-}
 
 subprojects {
 
@@ -27,27 +25,41 @@ subprojects {
 
     apply from: "${rootDir}/gradle/libs.gradle"
     apply from: "${rootDir}/gradle/common.gradle"
-    apply from: "${rootDir}/gradle/jacoco.gradle"
-
-    apply plugin: com.funext.gradle.support.JavaSupport
-    apply plugin: com.funext.gradle.support.EclipseSupport
-    apply plugin: com.funext.gradle.support.PublishSupport
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+    //apply plugin: com.funext.gradle.support.JavaSupport
+    //apply plugin: com.funext.gradle.support.EclipseSupport
+    //apply plugin: com.funext.gradle.support.PublishSupport
 
     apply plugin: 'com.adarshr.test-logger'
     println "config subproject: ${project.name}"
 
-    group = "com.funext"
+    group = "com.cetrax"
     version = rootProject.version
 
-    testlogger {
-        theme = 'mocha'
-        slowThreshold = 3000
-    }
-
     afterEvaluate {
-        test {
-            failOnNoDiscoveredTests = false
-            useJUnitPlatform()
+        println("beforeEvaluate: ${name}, hasProto: ${new File(projectDir, "main/proto").isDirectory()}")
+        if (new File(projectDir, "main/proto").isDirectory()) {
+            protobuf {
+                protoc {
+                    artifact = libs.google_protoc //"com.google.protobuf:protoc:3.25.8"
+                }
+                plugins {
+                    grpc {
+                        artifact = libs.grpc_gen
+                    }
+                }
+                generateProtoTasks {
+                    all().each { task ->
+                        task.builtins {
+                            java { option 'lite' }
+                        }
+                        task.plugins {
+                            grpc { option 'lite' }
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -57,31 +69,27 @@ subprojects {
                     'Implementation-Title': project.name,
                     'Implementation-Version': project.version,
                     'Implementation-Vendor': 'Funext',
-                    'Implementation-Vendor-Id': 'com.funext',
+                    'Implementation-Vendor-Id': 'com.cetrax',
                     'Implementation-Vendor-Url': 'http://funext.io',
                     'Specification-Title': project.name,
                     'Specification-Version': project.version,
-                    'Specification-Vendor': 'Funext')
+                    'Specification-Vendor': 'Cetrax')
         }
     }
 
     //tasks.getByName('publish')?.dependsOn("jar")
     //println("--------" + tasks.getByName('publish')+ "------------")
     project.afterEvaluate {
-
         publishing {
-
             publications {
-
-                mavenJava {
-                    //new File("${mPath}/${project.group.toString().replaceAll("\\.", "/")}/${project.name}").deleteDir()
+                mavenJava(MavenPublication) {
                     pom {
-                        name = 'Funext AOP - ' + project.name
+                        name = 'Cetrax AOP - ' + project.name
                         description = project.description
                         url = "${rootDir}/build/pom"
 
                         organization {
-                            name = 'Funext'
+                            name = 'Cetrax'
                             url = 'https://funext.io'
                         }
 
@@ -109,59 +117,12 @@ subprojects {
               }*/
             }
         }
-    }
-}
-
-task updateVersion(type: com.funext.gradle.tasks.UpdateVersion) {
-    description "Update version text in source files."
-    group "Funext"
-    processFiles = fileTree(projectDir) {
-        include '**/resources/**/*.xml'
-        include '**/resources/domain-models.xsd'
-        include '**/resources/object-views.xsd'
-        include '**/resources/data-import.xsd'
-        include '**/resources/templates/**/*.tmpl'
-        include '**/data/**/*config.xml'
-        include '**/webapp/package.json'
-    }
-}
-
-task generateChangelog(type: com.funext.gradle.tasks.GenerateChangelog) {
-    description "Generate changelog from unreleased entries."
-    group "Funext"
-    files = fileTree(projectDir) {
-        include 'changelogs/unreleased/*.yml'
-        include 'changelogs/unreleased/*.yaml'
-    }
-}
-
-task copyJarToTomcat {
-    dependsOn tasks.withType(War)
-    if (["funext-core",
-         "funext-common",
-         "funext-web"].contains(project.name)) {
-
-        //new File("D:/dev/apache-tomcat-9.0.73/webapps/ROOT.war").delete()
-
-        copy {
-            from "${project.buildDir}/libs/${project.name}-${project.version}.jar"
-            into "D:/dev/apache-tomcat-9.0.73/webapps/ROOT/WEB-INF/lib/"
+        test {
+            failOnNoDiscoveredTests = false
+            useJUnitPlatform()
         }
-
-        println("Copy jar: ${project.buildDir}/libs/${project.name}-${project.version}.jar")
-    }
-
-}
-
-task doPublish {
-
-    allprojects { project ->
-
-
     }
 }
 
 
-apply from: "gradle/javadoc.gradle"
-apply from: "gradle/style.gradle"
 apply from: "gradle/deps-versions.gradle"

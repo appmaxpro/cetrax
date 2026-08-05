@@ -1,0 +1,12 @@
+description = 'Cetrax Miscellaneous Utilities'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.slf4j_api
+    api project(':cetrax-common')
+    api project(':cetrax-mysql')
+    api project(':cetrax-h2')
+    testImplementation libs.testing
+    testImplementation project(':cetrax-common')
+}

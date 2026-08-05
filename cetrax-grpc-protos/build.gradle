@@ -1,0 +1,31 @@
+plugins  {
+    id 'java-library' // Exposes compiled proto classes to other subprojects
+    id 'com.google.protobuf' version '0.9.5'
+}
+
+description = 'Cetrax gRPC client'
+
+dependencies {
+    compileOnly libs.grpc
+}
+
+protobuf {
+    protoc {
+        artifact = libs.google_protoc //"com.google.protobuf:protoc:3.25.8"
+    }
+    plugins {
+        grpc {
+            artifact = libs.grpc_gen
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { option 'lite' }
+            }
+            task.plugins {
+                grpc { option 'lite' }
+            }
+        }
+    }
+}

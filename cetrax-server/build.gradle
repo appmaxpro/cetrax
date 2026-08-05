@@ -1,0 +1,18 @@
+description = 'Home of the Cetrax server capable of starting in HTTP, gRPC, or both'
+
+apply plugin: 'java'
+
+dependencies {
+    implementation libs.slf4j_logback
+    implementation libs.typesafe
+    implementation libs.jakarta_all
+    implementation project(':cetrax-common')
+    implementation libs.jakarta_annotation
+    api project(':cetrax-mysql')
+    api project(':cetrax-h2')
+    implementation project(':cetrax-s3')
+    api project(':cetrax-misc')
+    api project(':cetrax-grpc-protos')
+    implementation project(':cetrax-grpc-service')
+
+}

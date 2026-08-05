@@ -1,6 +1,6 @@
 ## Definition
 
-Cantor `Events` are multi-dimensional time-series data points; where each data point has a *timestamp* (in milliseconds) along with some arbitrary key/value pairs as *metadata* (where values are strings), some arbitrary key/value pairs as *dimensions* (where values are doubles), and optionally a byte array *payload* attached to an event.
+Cetrax `Events` are multi-dimensional time-series data points; where each data point has a *timestamp* (in milliseconds) along with some arbitrary key/value pairs as *metadata* (where values are strings), some arbitrary key/value pairs as *dimensions* (where values are doubles), and optionally a byte array *payload* attached to an event.
 
 An event looks like this:
 
@@ -25,7 +25,7 @@ An event looks like this:
 
 To make HTTP calls in local testing environment, use this base URL: [http://localhost:8084](http://localhost:8084).
 
-For convenience, you can use [Cantor Swagger UI](http://localhost:8084), which comes with your local cantor instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cantor HTTP server instance before you click on any Swagger UI link on this page.**
+For convenience, you can use [Cetrax Swagger UI](http://localhost:8084), which comes with your local cetrax instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cetrax HTTP server instance before you click on any Swagger UI link on this page.**
 
 Most of the `Events` API endpoints need required and/or optional URL parameters. Required URL parameters are shown as part of endpoint's path, while optional URL parameters, if existed, are given below. Only one endpoint (i.e. `POST ​/api​/events​/{namespace}`) needs data parameters.
 
@@ -201,7 +201,7 @@ curl -X DELETE "http://localhost:8084/api/events/expire/test-namespace/161602000
 
 ## Java gRPC API
 
-To make use of Cantor's gRPC client in local testing environment, make sure you have a local cantor gRPC server instance running. 
+To make use of Cetrax's gRPC client in local testing environment, make sure you have a local cetrax gRPC server instance running. 
 
 
 ### **namespaces()**
@@ -215,13 +215,13 @@ Get all event namespaces.
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.events().namespace());
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.events().namespace());
     }
 }
 ```
@@ -239,13 +239,13 @@ Create an event namespace.
 This following code creates an event namespace `dev-namespace`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.events().create("dev-namespace");
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.events().create("dev-namespace");
     }
 }
 ```
@@ -280,16 +280,16 @@ For storing multiple events:
 This following code stores a single event (with metadata, dimensions and payload) under event namespace `dev-namespace`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
         // remember to create the event namespace first
-        cantor.events().store("dev-namespace", System.currentTimeMillis(), Collections.singletonMap("metadataKey1", "testValue"), Collections.singletonMap("dimensionsKey2", 5.9), "Hello!".getBytes(StandardCharsets.UTF_8));
+        cetrax.events().store("dev-namespace", System.currentTimeMillis(), Collections.singletonMap("metadataKey1", "testValue"), Collections.singletonMap("dimensionsKey2", 5.9), "Hello!".getBytes(StandardCharsets.UTF_8));
     }
 }
 ```
@@ -360,13 +360,13 @@ List<Event> get(String namespace,
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 ​import java.io.IOException;
 
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.events().get("dev-namespace", System.currentTimeMillis() - 60000, System.currentTimeMillis(), false));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.events().get("dev-namespace", System.currentTimeMillis() - 60000, System.currentTimeMillis(), false));
     }
 }
 ```
@@ -390,14 +390,14 @@ Set<String> metadata(String namespace,
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;​
 import java.util.Collections;
 
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.events().metadata("dev-namespace", 0, System.currentTimeMillis(), Collections.singletonMap("metadataKey1", "=~test*"), null));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.events().metadata("dev-namespace", 0, System.currentTimeMillis(), Collections.singletonMap("metadataKey1", "=~test*"), null));
     }
 }
 ```
@@ -413,13 +413,13 @@ Drop an event namespace.
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;​
 
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.events().drop("dev-namespace");
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.events().drop("dev-namespace");
     }
 }
 ```
@@ -435,13 +435,13 @@ Expire all events with timestamp before the given end timestamp.
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;​
 
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.events().expire("dev-namespace", 1616031010483);
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.events().expire("dev-namespace", 1616031010483);
     }
 }
 ```

@@ -1,0 +1,14 @@
+description = 'Cetrax gRPC client'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.typesafe
+    compileOnly libs.jakarta_all
+    implementation libs.grpc
+    implementation libs.slf4j_logback
+    implementation project(':cetrax-base')
+    implementation project(':cetrax-common')
+    implementation project(':cetrax-grpc-protos')
+    testImplementation libs.testing
+}

@@ -1,0 +1,14 @@
+description = 'Cetrax http service'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.jakarta_all
+    compileOnly libs.slf4j_api
+    compileOnly libs.gson
+    compileOnly libs.spring_jersey
+    implementation libs.swagger
+    api project(':cetrax-base')
+    api project(':cetrax-common')
+    api project(':cetrax-functions')
+}

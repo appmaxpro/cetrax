@@ -1,0 +1,9 @@
+description = 'Cetrax on top of MySQL'
+
+apply plugin: 'java'
+
+dependencies {
+    api project(':cetrax-common')
+    api project(':cetrax-jdbc')
+    implementation 'mysql:mysql-connector-java:8.0.31'
+}

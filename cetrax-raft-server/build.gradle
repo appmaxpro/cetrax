@@ -1,0 +1,16 @@
+description = 'Cetrax Raft Server'
+
+apply plugin: 'java'
+
+ext {
+    hasProto = true
+}
+
+dependencies {
+    implementation libs.slf4j_logback
+    implementation libs.typesafe
+    implementation libs.jakarta_all
+    implementation libs.microraft(project)
+    implementation project(":cetrax-raft-commons")
+    implementation project(":cetrax-server")
+}

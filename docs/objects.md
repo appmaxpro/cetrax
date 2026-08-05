@@ -14,7 +14,7 @@ An object looks like this:
 
 To make HTTP calls in local testing environment, use this base URL: [http://localhost:8084](http://localhost:8084).
 
-For convenience, you can use [Cantor Swagger UI](http://localhost:8084), which comes with your local cantor instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cantor HTTP server instance before you click on any Swagger UI link on this page.**
+For convenience, you can use [Cetrax Swagger UI](http://localhost:8084), which comes with your local cetrax instance, to compose the full custom URL for your API calls. Full URL to each API endpoint's Swagger UI page is linked on each endpoint below. **Remember to spin up your local cetrax HTTP server instance before you click on any Swagger UI link on this page.**
 
 Most of the `Objects` API endpoints need required and/or optional URL parameters. Required URL parameters are shown as part of endpoint's path, while optional URL parameters, if existed, are given below. Only one endpoint (i.e. `PUT /api​/objects​/{namespace}​/{key}`) needs data parameters.
 
@@ -135,13 +135,13 @@ Get all object namespaces.
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.objects().namespace());
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.objects().namespace());
     }
 }
 ```
@@ -159,13 +159,13 @@ Create an object namespace.
 The following code creates an object namespace `dev`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.objects().create("dev");
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.objects().create("dev");
     }
 }
 ```
@@ -183,13 +183,13 @@ Drop an object namespace.
 The following code drops an object namespace `dev`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;​
 
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.objects().drop("dev");
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.objects().drop("dev");
     }
 }
 ```
@@ -213,13 +213,13 @@ Returns paginated list of key entries in a namespace; the returned list is not o
 The following code prints the first 20 object keys under the namespace `dev`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.objects().keys("dev", 0, 20));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.objects().keys("dev", 0, 20));
     }
 }
 ```
@@ -243,15 +243,15 @@ For storing multiple objects:
 The following code adds or overwrite the object with key `obj1` under namespace `dev` with the byte array derived from string `object data`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        cantor.objects.store("dev", Collections.singletonMap("obj1", "object data".getBytes(StandardCharsets.UTF_8)));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        cetrax.objects.store("dev", Collections.singletonMap("obj1", "object data".getBytes(StandardCharsets.UTF_8)));
     }
 }
 ```
@@ -271,13 +271,13 @@ Get an object's content by its key.
 The following code retrieve the content of object with key`obj1` under namespace `dev`.
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.objects.get("dev", "obj1"));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.objects.get("dev", "obj1"));
     }
 }
 ```
@@ -295,13 +295,13 @@ Delete object(s) by key(s).
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.objects.delete("dev", "obj1"));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.objects.delete("dev", "obj1"));
     }
 }
 ```
@@ -317,13 +317,13 @@ Returns number of key/value pairs in the given namespace.
 **Sample Code:**
 
 ```java
-import com.salesforce.cantor.grpc.CantorOnGrpc;
+import io.cetrax.grpc.CetraxOnGrpc;
 import java.io.IOException;
 ​
 class Scratch {
     public static void main(String[] args) throws IOException {
-        CantorOnGrpc cantor = new CantorOnGrpc("localhost:7443");
-        System.out.println(cantor.objects.size("dev"));
+        CetraxOnGrpc cetrax = new CetraxOnGrpc("localhost:7443");
+        System.out.println(cetrax.objects.size("dev"));
     }
 }
 ```

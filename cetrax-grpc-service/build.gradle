@@ -1,0 +1,12 @@
+description = 'Service layer for gRPC Cetrax'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.slf4j_api
+    api project(':cetrax-grpc-protos')
+    api project(':cetrax-common')
+    api project(':cetrax-h2')
+    testImplementation libs.testing
+
+}

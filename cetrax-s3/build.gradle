@@ -1,0 +1,14 @@
+description = 'Cetrax on top of S3'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.typesafe
+    compileOnly libs.jakarta_all
+    compileOnly libs.gson
+    implementation libs.jackson
+    api project(':cetrax-common')
+    api project(':cetrax-grpc-client')
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.638'
+    testImplementation libs.testing
+}

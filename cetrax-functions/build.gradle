@@ -1,0 +1,13 @@
+description = 'Cetrax Common'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.typesafe
+    compileOnly libs.jakarta_all
+    compileOnly libs.freemarker
+    compileOnly libs.groovy
+    compileOnly libs.slf4j_api
+    api project(':cetrax-base')
+    api project(':cetrax-common')
+}

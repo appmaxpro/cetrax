@@ -1,0 +1,12 @@
+description = 'Cetrax on top of JDBC'
+
+apply plugin: 'java'
+
+dependencies {
+    compileOnly libs.jakarta_all
+    compileOnly libs.guava
+    compileOnly libs.HikariCP
+    api project(':cetrax-base')
+    api project(':cetrax-common')
+    testImplementation libs.testing
+}

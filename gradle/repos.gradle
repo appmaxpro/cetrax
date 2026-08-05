@@ -1,6 +1,6 @@
 def repos = {
-  maven {url "${rootDir}/../../repo/6.1.1/releases"}
-  maven {url "${rootDir}/../../repo/6.1.1/snapshots"}
+  maven {url "${rootDir}/../../repo/8.1.1/releases"}
+  maven {url "${rootDir}/../../repo/8.1.1/snapshots"}
   mavenCentral();
 
   maven {

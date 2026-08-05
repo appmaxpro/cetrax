@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2020, Salesforce.com, Inc.
+ * All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+package io.cetrax.http.jersey;
+
+import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.servers.ServerVariable;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.server.ResourceConfig;
+
+@OpenAPIDefinition(
+        info = @Info(
+            title = "Cetrax API Documentation",
+            version = "1.0.0"
+        ),
+        servers = {
+            @Server(description = "Localhost",
+                    url = "http://localhost:{port}/api",
+                    variables = @ServerVariable(name = "port", defaultValue = "8083")),
+        }
+)
+class SwaggerJaxrsConfig extends ResourceConfig {
+    SwaggerJaxrsConfig() {
+        // cetrax filters
+        this.packages("io.cetrax.http.filters");
+
+        // cetrax server resources
+        this.packages("io.cetrax.http.resources");
+
+        // swagger initialization resource
+        this.register(OpenApiResource.class);
+
+        // jersey extension for file uploads
+        this.register(MultiPartFeature.class);
+    }
+}

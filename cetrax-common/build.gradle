@@ -1,0 +1,9 @@
+description = 'Cetrax Common'
+
+apply plugin: 'java'
+
+dependencies {
+  compileOnly libs.slf4j_api
+  api project(':cetrax-base')
+  testImplementation libs.testing
+}
