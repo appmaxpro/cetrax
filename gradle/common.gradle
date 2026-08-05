@@ -1,0 +1,34 @@
+
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "eclipse"
+
+//apply plugin: "org.openrewrite.gradle.RewritePlugin"
+java {
+  //withJavadocJar()
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(25)
+  }
+}
+
+dependencies {
+  testImplementation libs.junit_jupiter
+  testRuntimeOnly libs.junit_launcher
+
+}
+
+configurations.all {
+  exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+  //exclude group: 'org.glassfish.jaxb', module: 'jaxb-runtime'
+  exclude group: 'commons-logging', module: 'commons-logging'
+
+  resolutionStrategy {
+    force libs.slf4j_api
+  }
+}
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+  options.compilerArgs = ['-Xlint:-options']
+  options.incremental = true
+}

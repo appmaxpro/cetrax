@@ -1,0 +1,167 @@
+buildscript {
+    apply from: "gradle/repos.gradle"
+    dependencies {
+        classpath 'com.adarshr:gradle-test-logger-plugin:4.0.0'
+    }
+}
+
+apply plugin: "eclipse"
+apply plugin: "idea"
+
+apply from: "version.gradle"
+
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(":ext:build") || taskGraph.hasTask("ext:build")) {
+        tasks.each { it.enabled = false }
+    }
+}
+
+subprojects {
+
+    if (!new File(project.projectDir, 'build.gradle').exists()) {
+        println "Disable build project: ${project.name}"
+        tasks.each { it.enabled = false }
+        return
+    }
+
+    apply from: "${rootDir}/gradle/libs.gradle"
+    apply from: "${rootDir}/gradle/common.gradle"
+    apply from: "${rootDir}/gradle/jacoco.gradle"
+
+    apply plugin: com.funext.gradle.support.JavaSupport
+    apply plugin: com.funext.gradle.support.EclipseSupport
+    apply plugin: com.funext.gradle.support.PublishSupport
+
+    apply plugin: 'com.adarshr.test-logger'
+    println "config subproject: ${project.name}"
+
+    group = "com.funext"
+    version = rootProject.version
+
+    testlogger {
+        theme = 'mocha'
+        slowThreshold = 3000
+    }
+
+    afterEvaluate {
+        test {
+            failOnNoDiscoveredTests = false
+            useJUnitPlatform()
+        }
+    }
+
+    jar {
+        manifest {
+            attributes(
+                    'Implementation-Title': project.name,
+                    'Implementation-Version': project.version,
+                    'Implementation-Vendor': 'Funext',
+                    'Implementation-Vendor-Id': 'com.funext',
+                    'Implementation-Vendor-Url': 'http://funext.io',
+                    'Specification-Title': project.name,
+                    'Specification-Version': project.version,
+                    'Specification-Vendor': 'Funext')
+        }
+    }
+
+    //tasks.getByName('publish')?.dependsOn("jar")
+    //println("--------" + tasks.getByName('publish')+ "------------")
+    project.afterEvaluate {
+
+        publishing {
+
+            publications {
+
+                mavenJava {
+                    //new File("${mPath}/${project.group.toString().replaceAll("\\.", "/")}/${project.name}").deleteDir()
+                    pom {
+                        name = 'Funext AOP - ' + project.name
+                        description = project.description
+                        url = "${rootDir}/build/pom"
+
+                        organization {
+                            name = 'Funext'
+                            url = 'https://funext.io'
+                        }
+
+                        licenses {
+                            license {
+                                name = 'GNU Affero General Public License version 3'
+                                url = 'https://www.gnu.org/licenses/agpl-3.0.html'
+                                distribution = 'repo'
+                            }
+                        }
+                    }
+                }
+            }
+            repositories {
+
+                maven {
+                    def mPath = "${rootDir}/../repo/${baseVersion}/${version.endsWith('SNAPSHOT') ? 'snapshots' : 'releases'}"
+                    println("publish to:: ${mPath}/${project.group.toString().replaceAll("\\.", "/")}/${project.name}")
+                    name = 'myRepo'
+                    url = mPath
+                }
+                /*
+              tomcat {
+                D:\\dev\\apache-tomcat-9.0.73\\webapps\\ROOT\\WEB-INF\\lib
+              }*/
+            }
+        }
+    }
+}
+
+task updateVersion(type: com.funext.gradle.tasks.UpdateVersion) {
+    description "Update version text in source files."
+    group "Funext"
+    processFiles = fileTree(projectDir) {
+        include '**/resources/**/*.xml'
+        include '**/resources/domain-models.xsd'
+        include '**/resources/object-views.xsd'
+        include '**/resources/data-import.xsd'
+        include '**/resources/templates/**/*.tmpl'
+        include '**/data/**/*config.xml'
+        include '**/webapp/package.json'
+    }
+}
+
+task generateChangelog(type: com.funext.gradle.tasks.GenerateChangelog) {
+    description "Generate changelog from unreleased entries."
+    group "Funext"
+    files = fileTree(projectDir) {
+        include 'changelogs/unreleased/*.yml'
+        include 'changelogs/unreleased/*.yaml'
+    }
+}
+
+task copyJarToTomcat {
+    dependsOn tasks.withType(War)
+    if (["funext-core",
+         "funext-common",
+         "funext-web"].contains(project.name)) {
+
+        //new File("D:/dev/apache-tomcat-9.0.73/webapps/ROOT.war").delete()
+
+        copy {
+            from "${project.buildDir}/libs/${project.name}-${project.version}.jar"
+            into "D:/dev/apache-tomcat-9.0.73/webapps/ROOT/WEB-INF/lib/"
+        }
+
+        println("Copy jar: ${project.buildDir}/libs/${project.name}-${project.version}.jar")
+    }
+
+}
+
+task doPublish {
+
+    allprojects { project ->
+
+
+    }
+}
+
+
+apply from: "gradle/javadoc.gradle"
+apply from: "gradle/style.gradle"
+apply from: "gradle/deps-versions.gradle"

@@ -1,0 +1,8 @@
+rootProject.name = 'funext-rpc'
+
+file("./").traverse(type: groovy.io.FileType.DIRECTORIES, maxDepth: 1) { it ->
+    if (it.isDirectory() && new File(it, 'build.gradle').exists()) {
+        include "${it.name}"
+        project("${it.name}").projectDir = it
+    }
+}
